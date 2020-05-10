@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.desafio_android_alberto_junior.vm.CharacterViewModel" />
+    </data>
+
+    <com.google.android.material.circularreveal.CircularRevealRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/includeToolbar"
+            layout="@layout/toolbar" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_personagens"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/includeToolbar"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:scrollbars="vertical"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"
+            tools:listitem="@layout/item_character" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:backgroundTint="@color/colorPrimary"
+            android:src="@drawable/ic_search_web"
+            android:visibility="@{viewModel.showSearchButton}"
+            android:layout_margin="8dp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_sem_conteudo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/clique_no_botao_para_buscar"
+            android:textColor="@color/colorPrimaryDark"
+            android:visibility="@{viewModel.showEmpty}"
+            android:textSize="18sp" />
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/pb_buscar"
+            style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/colorAccent"
+            android:progressTint="@color/colorAccent"
+            android:visibility="@{viewModel.showLoading}"
+            tools:visibility="visible" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_carregando"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pb_buscar"
+            android:layout_centerInParent="true"
+            android:text="@string/buscando_personagens"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp"
+            android:visibility="@{viewModel.showLoading}"
+            tools:visibility="visible" />
+
+    </com.google.android.material.circularreveal.CircularRevealRelativeLayout>
+
+</layout>

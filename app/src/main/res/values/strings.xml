@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">desafio-android-alberto-junior</string>
+    <string name="nome">Nome:</string>
+    <string name="clique_no_botao_para_buscar">Clique no botão para buscar.</string>
+    <string name="revista_mais_cara">HQ mais cara ($)</string>
+    <string name="voltar">Voltar</string>
+    <string name="buscando_personagens">Buscando personagens</string>
+
+    <!--    formatados      -->
+    <string name="preco_revista"><b>Preço:</b> R$ %1$.2f</string>
+    <string name="carregando_informacoes">Carregando Informações</string>
+    <string name="erro_comic">HQs confiscadas pela S.H.I.E.L.D.</string>
+
+</resources>
