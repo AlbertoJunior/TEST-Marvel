@@ -1,5 +1,6 @@
 package com.example.desafio_android_alberto_junior.view.character;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +13,16 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.desafio_android_alberto_junior.MainApplication;
 import com.example.desafio_android_alberto_junior.R;
 import com.example.desafio_android_alberto_junior.database.Character;
+import com.example.desafio_android_alberto_junior.database.Comic;
+import com.example.desafio_android_alberto_junior.database.Image;
 import com.example.desafio_android_alberto_junior.databinding.FragmentDetailsCharacterBinding;
 import com.example.desafio_android_alberto_junior.utils.ImageFromURL;
 import com.example.desafio_android_alberto_junior.view.comic.ComicDetails;
@@ -22,6 +30,8 @@ import com.example.desafio_android_alberto_junior.vm.CharacterViewModel;
 import com.example.desafio_android_alberto_junior.web.WebClient;
 
 import javax.inject.Inject;
+
+import static com.example.desafio_android_alberto_junior.utils.ImageFromURL.IMAGE_PORTRAIT_FANTASTIC;
 
 public class CharacterDetails extends Fragment {
     @Inject
@@ -76,6 +86,7 @@ public class CharacterDetails extends Fragment {
     }
 
     private void setupInterface() {
+        binding.setCharacter(characterViewModel);
         Character character = characterViewModel.getCurrent().get();
         if (character == null)
             return;
@@ -83,7 +94,46 @@ public class CharacterDetails extends Fragment {
         if (character.getDescription().isEmpty())
             character.setDescription("As informações desse personagem foram confiscadas pela S.H.I.E.L.D.");
 
-        binding.setCharacter(character);
-        ImageFromURL.setupFantastic(requireContext(), binding.ciImagem, character);
+        searchImage(character);
+    }
+
+    private void searchImage(Character character) {
+        if (character != null) {
+            final Image thumbnail = character.getThumbnail();
+            final String originalPath = thumbnail.getPath();
+
+            //se já possuir uma imagem seta e retorna
+            if (thumbnail.getDrawableImage() != null) {
+                binding.ciImagem.setImageDrawable(thumbnail.getDrawableImage());
+                return;
+            }
+
+            // se for uma path inválida seta um default e retorna
+            if (originalPath == null || originalPath.isEmpty() || originalPath.contains("image_not_available")) {
+                binding.ciImagem.setImageResource(ImageFromURL.DEFAULT_XLARGE_NOT_AVAILABLE);
+                return;
+            }
+
+            characterViewModel.setShowLoading(true);
+
+            // buscando a imagem na web
+            String path = String.format("%s/%s.%s", originalPath, IMAGE_PORTRAIT_FANTASTIC, thumbnail.getExtension());
+            Glide.with(requireContext()).load(path).listener(new RequestListener<Drawable>() {
+                @Override
+                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                    characterViewModel.setShowLoading(false);
+                    return false;
+                }
+
+                @Override
+                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                    characterViewModel.setShowLoading(false);
+                    final Character auxCharacter = characterViewModel.getCurrent().get();
+                    if (auxCharacter != null)
+                        auxCharacter.getThumbnail().setDrawableImage(resource);
+                    return false;
+                }
+            }).placeholder(ImageFromURL.DEFAULT_XLARGE_NOT_AVAILABLE).into(binding.ciImagem);
+        }
     }
 }

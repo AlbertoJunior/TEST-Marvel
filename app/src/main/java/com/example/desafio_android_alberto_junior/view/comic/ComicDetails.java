@@ -74,6 +74,7 @@ public class ComicDetails extends Fragment {
 
     private void getComicsInWeb(int characterId, int limit, int offset) {
         viewModel.setShowLoading(true);
+
         webClient.getCharacterComicsEnqueue(characterId, limit, offset, new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
@@ -111,7 +112,7 @@ public class ComicDetails extends Fragment {
             viewModel.setShowLoading(false);
             viewModel.setShowError(false);
             viewModel.setShowCurrent(true);
-            new Handler(Looper.getMainLooper()).post(this::searchImage);
+            searchImageHandler();
         }
     }
 
@@ -139,7 +140,7 @@ public class ComicDetails extends Fragment {
 
             // buscando a imagem na web
             String path = String.format("%s/%s.%s", originalPath, IMAGE_PORTRAIT_FANTASTIC, thumbnail.getExtension());
-            Glide.with(requireContext()).load(path).centerCrop().placeholder(ImageFromURL.DEFAULT_XLARGE_NOT_AVAILABLE).into(binding.ciImagem);
+            Glide.with(requireContext()).load(path).placeholder(ImageFromURL.DEFAULT_XLARGE_NOT_AVAILABLE).into(binding.ciImagem);
         }
     }
 

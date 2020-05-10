@@ -83,15 +83,14 @@ public class CharacterList extends Fragment {
         viewModel.setShowLoading(true);
         viewModel.setShowSearchButton(false);
 
-        webClient.getCharactersEnqueue(20, viewModel.getOffset()*20, new Callback() {
+        webClient.getCharactersEnqueue(20, viewModel.getOffset() * 20, new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-                new Handler(Looper.getMainLooper()).post(() -> {
-                    viewModel.setShowSearchButton(true);
-                    viewModel.setShowLoading(false);
-                    if (characterAdapter.getList().isEmpty())
-                        viewModel.setShowEmpty(true);
-                });
+                viewModel.setMessageError("O Servidor da S.H.I.E.L.D. não respondeu a tempo");
+                viewModel.setShowSearchButton(true);
+                viewModel.setShowError(true);
+                viewModel.setShowLoading(false);
+                viewModel.setShowEmpty(characterAdapter.getList().isEmpty());
             }
 
             @Override
@@ -105,6 +104,7 @@ public class CharacterList extends Fragment {
                     viewModel.setShowSearchButton(true);
                     viewModel.setShowLoading(false);
                     viewModel.setShowEmpty(false);
+                    viewModel.setShowError(false);
                     viewModel.setOffset(viewModel.getOffset() + 1);
 
                     List<Character> results = data.getResults();
@@ -113,7 +113,8 @@ public class CharacterList extends Fragment {
                     });
                 } else {
                     String format = String.format("Erro ao buscar os personagens -> Código: %s \t Mensagem: %s", response.code(), response.message());
-                    Toast.makeText(requireContext(), format, Toast.LENGTH_SHORT).show();
+                    viewModel.setMessageError(format);
+                    viewModel.setShowError(true);
                 }
             }
         });

@@ -17,17 +17,20 @@ public class CharacterViewModel extends ViewModel {
     private List<Character> characterList;
     private int offset;
 
-    private ObservableArrayList<Character> auxCharacterList;
     private ObservableField<Character> current;
+    private ObservableField<String> messageError;
     private ObservableInt showLoading;
     private ObservableInt showEmpty;
+    private ObservableInt showError;
     private ObservableInt showSearchButton;
 
     public CharacterViewModel() {
         characterList = new ArrayList<>();
         current = new ObservableField<>();
+        messageError = new ObservableField<>();
         showLoading = new ObservableInt();
         showEmpty = new ObservableInt();
+        showError = new ObservableInt();
         showSearchButton = new ObservableInt();
     }
 
@@ -45,6 +48,14 @@ public class CharacterViewModel extends ViewModel {
 
     public void setShowEmpty(boolean showLoading) {
         this.showEmpty.set(showLoading ? View.VISIBLE : View.GONE);
+    }
+
+    public ObservableInt getShowError() {
+        return showError;
+    }
+
+    public void setShowError(boolean showError) {
+        this.showError.set(showError ? View.VISIBLE : View.GONE);
     }
 
     public ObservableInt getShowSearchButton() {
@@ -71,6 +82,14 @@ public class CharacterViewModel extends ViewModel {
         this.current.set(current);
     }
 
+    public ObservableField<String> getMessageError() {
+        return messageError;
+    }
+
+    public void setMessageError(String messageError) {
+        this.messageError.set(messageError);
+    }
+
     public void setCurrentByString(String character) {
         setCurrent(new Gson().fromJson(character, Character.class));
     }
@@ -80,6 +99,6 @@ public class CharacterViewModel extends ViewModel {
     }
 
     public void setOffset(int offset) {
-        this.offset = offset > 10 ? 0 : offset+1;
+        this.offset = offset > 10 ? 0 : offset + 1;
     }
 }

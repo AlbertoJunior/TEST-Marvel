@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.example.desafio_android_alberto_junior.vm.CharacterViewModel" />
@@ -37,30 +38,32 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:backgroundTint="@color/colorPrimary"
+            android:layout_margin="8dp"
+            android:backgroundTint="@color/colorAccentDark"
             android:src="@drawable/ic_search_web"
-            android:visibility="@{viewModel.showSearchButton}"
-            android:layout_margin="8dp" />
+            android:visibility="@{viewModel.showSearchButton}" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_sem_conteudo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:layout_margin="8dp"
             android:text="@string/clique_no_botao_para_buscar"
             android:textColor="@color/colorPrimaryDark"
-            android:visibility="@{viewModel.showEmpty}"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:visibility="@{viewModel.showEmpty}" />
 
         <androidx.core.widget.ContentLoadingProgressBar
             android:id="@+id/pb_buscar"
             style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/tv_sem_conteudo"
             android:layout_centerInParent="true"
             android:indeterminate="true"
             android:indeterminateTint="@color/colorAccent"
-            android:progressTint="@color/colorAccent"
+            android:progressTint="@color/colorAccentDark"
             android:visibility="@{viewModel.showLoading}"
             tools:visibility="visible" />
 
@@ -75,6 +78,22 @@
             android:textSize="18sp"
             android:visibility="@{viewModel.showLoading}"
             tools:visibility="visible" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_erro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_carregando"
+            android:layout_centerInParent="true"
+            android:layout_margin="8dp"
+            android:maxLines="3"
+            android:text="@{viewModel.messageError}"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccentDark"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:visibility="@{viewModel.showError}"
+            tools:text="Mensagem de erro" />
 
     </com.google.android.material.circularreveal.CircularRevealRelativeLayout>
 
