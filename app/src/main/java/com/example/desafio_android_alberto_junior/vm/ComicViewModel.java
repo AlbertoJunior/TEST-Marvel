@@ -22,9 +22,12 @@ public class ComicViewModel extends ViewModel {
 
     private ObservableField<Comic> current;
     private ObservableField<Drawable> image;
+    private ObservableField<String> messageError;
+
     private ObservableInt showLoading;
     private ObservableInt showCurrent;
     private ObservableInt showError;
+    private ObservableInt showButtonRefresh;
     private ObservableBoolean listFinish;
 
     public ComicViewModel() {
@@ -32,7 +35,9 @@ public class ComicViewModel extends ViewModel {
         showLoading = new ObservableInt();
         showCurrent = new ObservableInt();
         showError = new ObservableInt();
+        showButtonRefresh = new ObservableInt();
         current = new ObservableField<>();
+        messageError = new ObservableField<>();
         image = new ObservableField<>();
         listFinish = new ObservableBoolean();
 
@@ -45,9 +50,7 @@ public class ComicViewModel extends ViewModel {
         current.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
-                if (current.get() == null)
-                    setShowError(true);
-                else
+                if (current.get() != null)
                     setShowCurrent(true);
             }
         });
@@ -59,10 +62,15 @@ public class ComicViewModel extends ViewModel {
             public void onPropertyChanged(Observable sender, int propertyId) {
                 if (listFinish.get()) {
                     final Comic current = searchMostValuable();
-                    if (current == null)
+                    //se não encontrar a que não vale mais, é pq não existe nenhuma
+                    if (current == null) {
+                        setMessageError("HQs confiscadas pela S.H.I.E.L.D.");
                         setShowError(true);
-                    else
+                    } else {
                         setCurrent(current);
+                        setShowError(false);
+                    }
+
                     setShowLoading(false);
                 }
             }
@@ -94,6 +102,14 @@ public class ComicViewModel extends ViewModel {
         this.listFinish.set(listFinish);
     }
 
+    public ObservableField<String> getMessageError() {
+        return messageError;
+    }
+
+    public void setMessageError(String messageError) {
+        this.messageError.set(messageError);
+    }
+
     public List<Comic> getComicList() {
         return comicList;
     }
@@ -120,6 +136,14 @@ public class ComicViewModel extends ViewModel {
 
     public void setShowError(boolean showError) {
         this.showError.set(showError ? View.VISIBLE : View.GONE);
+    }
+
+    public ObservableInt getShowButtonRefresh() {
+        return showButtonRefresh;
+    }
+
+    public void setShowButtonRefresh(boolean showButtonRefresh) {
+        this.showButtonRefresh.set(showButtonRefresh ? View.VISIBLE : View.GONE);
     }
 
     public ObservableField<Comic> getCurrent() {

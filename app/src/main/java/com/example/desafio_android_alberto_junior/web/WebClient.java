@@ -17,9 +17,9 @@ public class WebClient {
 
     public WebClient() {
         client = new OkHttpClient();
-        client.setConnectTimeout(1000, TimeUnit.MILLISECONDS);
-        client.setReadTimeout(1000, TimeUnit.MILLISECONDS);
-        client.setWriteTimeout(1000, TimeUnit.MILLISECONDS);
+        client.setConnectTimeout(2000, TimeUnit.MILLISECONDS);
+        client.setReadTimeout(2000, TimeUnit.MILLISECONDS);
+        client.setWriteTimeout(2000, TimeUnit.MILLISECONDS);
     }
 
     private void get(String url, Callback callback) {
@@ -32,23 +32,14 @@ public class WebClient {
     }
 
     public void getCharactersEnqueue(int limit, Callback callback) {
-        String url = String.format(Locale.ENGLISH,
-                "https://gateway.marvel.com/v1/public/characters?orderBy=name&limit=%d&ts=1&apikey=ecb68ec3f6e8fae2cbf91a98e74018eb&hash=%s",
-                limit, hash);
-        get(url, callback);
+        getCharactersEnqueue(limit, 0, callback);
     }
 
-    public Call getCharacterComics(int characterId, int limit, int offset) {
+    public void getCharactersEnqueue(int limit, int offset, Callback callback) {
         String url = String.format(Locale.ENGLISH,
-                "https://gateway.marvel.com/v1/public/characters/%d/comics?limit=%d&offset=%d&ts=1&apikey=ecb68ec3f6e8fae2cbf91a98e74018eb&hash=%s",
-                characterId, limit, offset, hash);
-
-        Request request = new Request
-                .Builder()
-                .url(url)
-                .get()
-                .build();
-        return client.newCall(request);
+                "https://gateway.marvel.com/v1/public/characters?orderBy=name&limit=%d&offset=%d&ts=1&apikey=ecb68ec3f6e8fae2cbf91a98e74018eb&hash=%s",
+                limit, offset, hash);
+        get(url, callback);
     }
 
     public void getCharacterComicsEnqueue(int characterId, int limit, int offset, Callback callback) {

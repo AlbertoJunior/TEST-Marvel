@@ -10,5 +10,6 @@
     <string name="preco_revista"><b>Preço:</b> R$ %1$.2f</string>
     <string name="carregando_informacoes">Carregando Informações</string>
     <string name="erro_comic">HQs confiscadas pela S.H.I.E.L.D.</string>
+    <string name="atualizar">Atualizar</string>
 
 </resources>

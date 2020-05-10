@@ -83,7 +83,7 @@ public class CharacterList extends Fragment {
         viewModel.setShowLoading(true);
         viewModel.setShowSearchButton(false);
 
-        webClient.getCharactersEnqueue(20, new Callback() {
+        webClient.getCharactersEnqueue(20, viewModel.getOffset()*20, new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
                 new Handler(Looper.getMainLooper()).post(() -> {
@@ -101,12 +101,15 @@ public class CharacterList extends Fragment {
                     Gson gson = new Gson();
                     CharacterDataWrapper characterData = gson.fromJson(string, CharacterDataWrapper.class);
                     CharacterDataContainer data = characterData.getData();
+
+                    viewModel.setShowSearchButton(true);
+                    viewModel.setShowLoading(false);
+                    viewModel.setShowEmpty(false);
+                    viewModel.setOffset(viewModel.getOffset() + 1);
+
                     List<Character> results = data.getResults();
                     new Handler(Looper.getMainLooper()).post(() -> {
                         characterAdapter.setList(results);
-                        viewModel.setShowSearchButton(true);
-                        viewModel.setShowLoading(false);
-                        viewModel.setShowEmpty(false);
                     });
                 } else {
                     String format = String.format("Erro ao buscar os personagens -> Código: %s \t Mensagem: %s", response.code(), response.message());

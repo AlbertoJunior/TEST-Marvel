@@ -14,9 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CharacterViewModel extends ViewModel {
-    private ObservableArrayList<Character> auxCharacterList;
-
     private List<Character> characterList;
+    private int offset;
+
+    private ObservableArrayList<Character> auxCharacterList;
     private ObservableField<Character> current;
     private ObservableInt showLoading;
     private ObservableInt showEmpty;
@@ -72,5 +73,13 @@ public class CharacterViewModel extends ViewModel {
 
     public void setCurrentByString(String character) {
         setCurrent(new Gson().fromJson(character, Character.class));
+    }
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset > 10 ? 0 : offset+1;
     }
 }

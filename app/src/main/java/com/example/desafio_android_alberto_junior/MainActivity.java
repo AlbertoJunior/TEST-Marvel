@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
     private void listarPersonagens() {
         supportFragmentManager.beginTransaction()
                 .add(R.id.container, new CharacterList(), "character_list")
-                .addToBackStack("root")
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit();
     }

@@ -49,6 +49,7 @@ public class ComicDetails extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_details_comic, container, false);
         MainApplication.getComponent().inject(this);
         binding.btnVoltar.setOnClickListener(v -> navigationBack());
+        binding.btnAtualizar.setOnClickListener(v -> getComicsInWeb(viewModel.getCharacterId(), 100, 0));
         return binding.getRoot();
     }
 
@@ -76,7 +77,10 @@ public class ComicDetails extends Fragment {
         webClient.getCharacterComicsEnqueue(characterId, limit, offset, new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-                e.printStackTrace();
+                viewModel.setMessageError("O Servidor da S.H.I.E.L.D. não respondeu a tempo");
+                viewModel.setShowError(true);
+                viewModel.setShowButtonRefresh(true);
+                viewModel.setShowLoading(false);
             }
 
             @Override
@@ -93,6 +97,7 @@ public class ComicDetails extends Fragment {
                         getComicsInWeb(characterId, limit, offset + 1);
                     else {
                         viewModel.setListFinish(true);
+                        viewModel.setShowButtonRefresh(false);
                         searchImageHandler();
                     }
                 }
