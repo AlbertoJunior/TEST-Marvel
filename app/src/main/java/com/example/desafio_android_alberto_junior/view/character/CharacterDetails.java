@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +22,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.desafio_android_alberto_junior.MainApplication;
 import com.example.desafio_android_alberto_junior.R;
+import com.example.desafio_android_alberto_junior.animation.EndAnimation;
 import com.example.desafio_android_alberto_junior.databinding.FragmentDetailsCharacterBinding;
 import com.example.desafio_android_alberto_junior.model.Character;
 import com.example.desafio_android_alberto_junior.model.Image;
@@ -52,8 +55,13 @@ public class CharacterDetails extends Fragment {
 
     private void navigationBack() {
         FragmentManager fragmentManager = getFragmentManager();
-        if (fragmentManager != null)
-            fragmentManager.popBackStack();
+        if (fragmentManager != null) {
+            binding.getRoot().setVisibility(View.GONE);
+
+            final Animation animation = AnimationUtils.loadAnimation(requireContext(), R.anim.fast_fade_out);
+            animation.setAnimationListener(new EndAnimation(fragmentManager::popBackStack));
+            binding.getRoot().startAnimation(animation);
+        }
     }
 
     private void navigationComic() {
@@ -65,11 +73,16 @@ public class CharacterDetails extends Fragment {
             if (character != null) {
                 args.putInt("character_id", character.getId());
                 fragment.setArguments(args);
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, fragment, "descricao_revista")
-                        .addToBackStack("character_details")
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                        .commit();
+
+                final Animation animation = AnimationUtils.loadAnimation(requireContext(), R.anim.fast_fade_out);
+                animation.setAnimationListener(
+                        new EndAnimation(() -> fragmentManager.beginTransaction()
+                                .replace(R.id.container, fragment, "descricao_revista")
+                                .addToBackStack("character_details")
+                                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                                .commit()));
+                binding.getRoot().setVisibility(View.GONE);
+                binding.getRoot().startAnimation(animation);
             }
         }
     }
@@ -94,6 +107,9 @@ public class CharacterDetails extends Fragment {
             character.setDescription("As informações desse personagem foram confiscadas pela S.H.I.E.L.D.");
 
         searchImage(character);
+
+        final Animation animation = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in);
+        binding.getRoot().startAnimation(animation);
     }
 
     private void searchImage(Character character) {
@@ -104,6 +120,7 @@ public class CharacterDetails extends Fragment {
             //se já possuir uma imagem seta e retorna
             if (thumbnail.getDrawableImage() != null) {
                 binding.ciImagem.setImageDrawable(thumbnail.getDrawableImage());
+                binding.ciImagem.startAnimation(AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in));
                 characterViewModel.setShowLoading(false);
                 return;
             }
@@ -111,6 +128,7 @@ public class CharacterDetails extends Fragment {
             // se for uma path inválida seta um default e retorna
             if (originalPath == null || originalPath.isEmpty() || originalPath.contains("image_not_available")) {
                 binding.ciImagem.setImageResource(ImageFromURL.DEFAULT_XLARGE_NOT_AVAILABLE);
+                binding.ciImagem.startAnimation(AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in));
                 characterViewModel.setShowLoading(false);
                 return;
             }
@@ -132,8 +150,10 @@ public class CharacterDetails extends Fragment {
                         public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                             characterViewModel.setShowLoading(false);
                             final Character auxCharacter = characterViewModel.getCurrent().get();
-                            if (auxCharacter != null)
+                            if (auxCharacter != null) {
                                 auxCharacter.getThumbnail().setDrawableImage(resource);
+                                binding.ciImagem.startAnimation(AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in));
+                            }
                             return false;
                         }
                     })
