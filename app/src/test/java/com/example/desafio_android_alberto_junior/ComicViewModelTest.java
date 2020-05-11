@@ -1,17 +1,13 @@
 package com.example.desafio_android_alberto_junior;
 
-import android.view.View;
-
 import com.example.desafio_android_alberto_junior.model.Comic;
 import com.example.desafio_android_alberto_junior.model.ComicPrice;
 import com.example.desafio_android_alberto_junior.vm.ComicViewModel;
 
 import org.jetbrains.annotations.NotNull;
-import org.junit.After;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -19,9 +15,9 @@ import java.util.Random;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 public class ComicViewModelTest {
     @Test
@@ -68,7 +64,8 @@ public class ComicViewModelTest {
         for (int i = 0; i < 19; i++) {
             Comic comic = new Comic();
             comic.setTitle(String.format("Assert Hero #%d - Testing", i));
-            setComicPrice(comic, r.nextInt(20));
+            // gerando uma quantia aleatoria de ComicPrice
+            setComicPrices(comic, r, r.nextInt(5) + 1);
             comics.add(comic);
         }
 
@@ -79,9 +76,12 @@ public class ComicViewModelTest {
 
         viewModel.setComicList(comics);
         viewModel.setListFinish(true);
+
         Comic comicMostValuable = viewModel.searchMostValuable();
         assertNotNull(comicMostValuable);
         assertEquals(comicMostValuable.getTitle(), comic.getTitle());
+        assertNotEquals(150, comicMostValuable.getAuxPrice(), 0.0);
+        assertEquals(200, comicMostValuable.getAuxPrice(), 0.0);
     }
 
     @Test
@@ -93,6 +93,18 @@ public class ComicViewModelTest {
         assertEquals(viewModel.getShowLoading().get(), GONE);
         // vai tentar buscar o mais valioso e não vai encontrar, tem que exibir o erro
         assertEquals(viewModel.getShowError().get(), VISIBLE);
+    }
+
+    private void setComicPrices(@NotNull Comic comic, Random r, int qtdPrices) {
+        List<ComicPrice> prices = new ArrayList<>();
+        for (int i = 0; i < qtdPrices; i++) {
+            ComicPrice comicPrice = new ComicPrice();
+            // gerando preços aleatórios
+            comicPrice.setPrice(r.nextInt(100));
+            comicPrice.setType(String.format("br[%d]", i));
+            prices.add(comicPrice);
+        }
+        comic.setPrices(prices);
     }
 
     private void setComicPrice(@NotNull Comic comic, int val) {

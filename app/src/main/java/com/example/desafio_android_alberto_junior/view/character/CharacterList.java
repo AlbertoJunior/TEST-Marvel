@@ -111,8 +111,10 @@ public class CharacterList extends Fragment {
                         characterAdapter.setList(results);
                     });
                 } else {
-                    String format = String.format("Erro ao buscar os personagens -> Código: %s \t Mensagem: %s", response.code(), response.message());
-                    viewModel.setMessageError(format);
+                    viewModel.setMessageError(
+                            String.format("Erro ao buscar os personagens -> Código: %s \t Mensagem: %s",
+                                    response.code(),
+                                    response.message()));
                     viewModel.setShowError(true);
                 }
             }

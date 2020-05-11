@@ -117,22 +117,26 @@ public class CharacterDetails extends Fragment {
 
             // buscando a imagem na web
             String path = String.format("%s/%s.%s", originalPath, IMAGE_PORTRAIT_FANTASTIC, thumbnail.getExtension());
-            Glide.with(requireContext()).load(path).listener(new RequestListener<Drawable>() {
-                @Override
-                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                    characterViewModel.setShowLoading(false);
-                    return false;
-                }
+            Glide.with(requireContext())
+                    .load(path)
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            characterViewModel.setShowLoading(false);
+                            return false;
+                        }
 
-                @Override
-                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                    characterViewModel.setShowLoading(false);
-                    final Character auxCharacter = characterViewModel.getCurrent().get();
-                    if (auxCharacter != null)
-                        auxCharacter.getThumbnail().setDrawableImage(resource);
-                    return false;
-                }
-            }).placeholder(ImageFromURL.DEFAULT_XLARGE_NOT_AVAILABLE).into(binding.ciImagem);
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            characterViewModel.setShowLoading(false);
+                            final Character auxCharacter = characterViewModel.getCurrent().get();
+                            if (auxCharacter != null)
+                                auxCharacter.getThumbnail().setDrawableImage(resource);
+                            return false;
+                        }
+                    })
+                    .placeholder(ImageFromURL.DEFAULT_XLARGE_NOT_AVAILABLE)
+                    .into(binding.ciImagem);
         }
     }
 }
