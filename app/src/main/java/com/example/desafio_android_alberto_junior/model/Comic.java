@@ -1,4 +1,4 @@
-package com.example.desafio_android_alberto_junior.database;
+package com.example.desafio_android_alberto_junior.model;
 
 import java.util.List;
 

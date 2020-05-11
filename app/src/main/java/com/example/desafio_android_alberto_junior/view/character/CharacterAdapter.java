@@ -9,7 +9,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.desafio_android_alberto_junior.R;
-import com.example.desafio_android_alberto_junior.database.Character;
+import com.example.desafio_android_alberto_junior.model.Character;
 import com.example.desafio_android_alberto_junior.databinding.ItemCharacterBinding;
 import com.example.desafio_android_alberto_junior.utils.ImageFromURL;
 

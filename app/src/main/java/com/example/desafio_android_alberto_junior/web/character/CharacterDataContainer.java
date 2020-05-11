@@ -1,6 +1,6 @@
 package com.example.desafio_android_alberto_junior.web.character;
 
-import com.example.desafio_android_alberto_junior.database.Character;
+import com.example.desafio_android_alberto_junior.model.Character;
 
 import java.util.List;
 

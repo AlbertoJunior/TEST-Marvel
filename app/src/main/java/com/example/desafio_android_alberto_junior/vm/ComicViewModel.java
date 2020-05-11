@@ -9,12 +9,14 @@ import androidx.databinding.ObservableField;
 import androidx.databinding.ObservableInt;
 import androidx.lifecycle.ViewModel;
 
-import com.example.desafio_android_alberto_junior.database.Comic;
-import com.example.desafio_android_alberto_junior.database.Image;
+import com.example.desafio_android_alberto_junior.model.Comic;
+import com.example.desafio_android_alberto_junior.model.ComicPrice;
+import com.example.desafio_android_alberto_junior.model.Image;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ComicViewModel extends ViewModel {
     private int characterId;
@@ -110,6 +112,10 @@ public class ComicViewModel extends ViewModel {
         this.messageError.set(messageError);
     }
 
+    public void setComicList(List<Comic> comicList) {
+        this.comicList = comicList;
+    }
+
     public List<Comic> getComicList() {
         return comicList;
     }
@@ -174,14 +180,14 @@ public class ComicViewModel extends ViewModel {
         this.characterId = characterId;
     }
 
-    private Comic searchMostValuable() {
+    public Comic searchMostValuable() {
         final Comic[] mostValuable = {null};
 
-        if (!getComicList().isEmpty())
-            mostValuable[0] = getComicList().get(0);
+        if (getComicList().isEmpty())
+            return null;
 
+        mostValuable[0] = getComicList().get(0);
         final float[] price = {0};
-
         getComicList().forEach(comic ->
                 comic.getPrices().forEach(p -> {
                     if (p.getPrice() > price[0]) {

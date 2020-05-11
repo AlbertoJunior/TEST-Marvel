@@ -12,9 +12,9 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.desafio_android_alberto_junior.R;
-import com.example.desafio_android_alberto_junior.database.Character;
-import com.example.desafio_android_alberto_junior.database.Comic;
-import com.example.desafio_android_alberto_junior.database.Image;
+import com.example.desafio_android_alberto_junior.model.Character;
+import com.example.desafio_android_alberto_junior.model.Comic;
+import com.example.desafio_android_alberto_junior.model.Image;
 
 import org.jetbrains.annotations.NotNull;
 

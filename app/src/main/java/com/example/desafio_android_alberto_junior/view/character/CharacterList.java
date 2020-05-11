@@ -6,7 +6,6 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,7 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.desafio_android_alberto_junior.MainApplication;
 import com.example.desafio_android_alberto_junior.R;
-import com.example.desafio_android_alberto_junior.database.Character;
+import com.example.desafio_android_alberto_junior.model.Character;
 import com.example.desafio_android_alberto_junior.databinding.FragmentListCharacterBinding;
 import com.example.desafio_android_alberto_junior.vm.CharacterViewModel;
 import com.example.desafio_android_alberto_junior.web.WebClient;
@@ -105,7 +104,7 @@ public class CharacterList extends Fragment {
                     viewModel.setShowLoading(false);
                     viewModel.setShowEmpty(false);
                     viewModel.setShowError(false);
-                    viewModel.setOffset(viewModel.getOffset() + 1);
+                    viewModel.updateOffset();
 
                     List<Character> results = data.getResults();
                     new Handler(Looper.getMainLooper()).post(() -> {

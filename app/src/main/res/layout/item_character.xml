@@ -6,7 +6,7 @@
     <data>
         <variable
             name="character"
-            type="com.example.desafio_android_alberto_junior.database.Character" />
+            type="com.example.desafio_android_alberto_junior.model.Character" />
     </data>
 
     <androidx.cardview.widget.CardView

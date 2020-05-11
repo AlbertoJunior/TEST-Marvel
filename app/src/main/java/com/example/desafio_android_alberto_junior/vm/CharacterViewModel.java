@@ -2,18 +2,18 @@ package com.example.desafio_android_alberto_junior.vm;
 
 import android.view.View;
 
-import androidx.databinding.ObservableArrayList;
 import androidx.databinding.ObservableField;
 import androidx.databinding.ObservableInt;
 import androidx.lifecycle.ViewModel;
 
-import com.example.desafio_android_alberto_junior.database.Character;
+import com.example.desafio_android_alberto_junior.model.Character;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CharacterViewModel extends ViewModel {
+    private final int LIMIT_OFFSET = 10;
     private List<Character> characterList;
     private int offset;
 
@@ -99,6 +99,10 @@ public class CharacterViewModel extends ViewModel {
     }
 
     public void setOffset(int offset) {
-        this.offset = offset > 10 ? 0 : offset + 1;
+        this.offset = offset;
+    }
+
+    public void updateOffset() {
+        this.offset = offset >= LIMIT_OFFSET ? 0 : offset + 1;
     }
 }
