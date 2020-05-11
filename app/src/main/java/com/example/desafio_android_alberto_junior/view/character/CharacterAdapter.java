@@ -72,7 +72,7 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.Char
         private void bind(Character character) {
             itemBinding.setCharacter(character);
             itemBinding.card.setOnClickListener(v -> listener.onClick(character));
-            ImageFromURL.setupLarge(context, itemBinding.ciImagem, character);
+            ImageFromURL.setupLarge(context, itemBinding.ciImagem, character.getThumbnail());
         }
     }
 }

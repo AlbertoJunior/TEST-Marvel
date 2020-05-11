@@ -20,9 +20,9 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.desafio_android_alberto_junior.MainApplication;
 import com.example.desafio_android_alberto_junior.R;
+import com.example.desafio_android_alberto_junior.databinding.FragmentDetailsCharacterBinding;
 import com.example.desafio_android_alberto_junior.model.Character;
 import com.example.desafio_android_alberto_junior.model.Image;
-import com.example.desafio_android_alberto_junior.databinding.FragmentDetailsCharacterBinding;
 import com.example.desafio_android_alberto_junior.utils.ImageFromURL;
 import com.example.desafio_android_alberto_junior.view.comic.ComicDetails;
 import com.example.desafio_android_alberto_junior.vm.CharacterViewModel;
@@ -104,12 +104,14 @@ public class CharacterDetails extends Fragment {
             //se já possuir uma imagem seta e retorna
             if (thumbnail.getDrawableImage() != null) {
                 binding.ciImagem.setImageDrawable(thumbnail.getDrawableImage());
+                characterViewModel.setShowLoading(false);
                 return;
             }
 
             // se for uma path inválida seta um default e retorna
             if (originalPath == null || originalPath.isEmpty() || originalPath.contains("image_not_available")) {
                 binding.ciImagem.setImageResource(ImageFromURL.DEFAULT_XLARGE_NOT_AVAILABLE);
+                characterViewModel.setShowLoading(false);
                 return;
             }
 
